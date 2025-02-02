@@ -22,6 +22,6 @@ namespace UniversiteOtomasyonu.Entities
         public List<OgretimGorevlisi> OgretimGorevlisis { get; set; }
 
         //1-N
-        public List<Ders> Dersler { get; set; }
+        public List<BolumDers> BolumDers { get; set; }
     }
 }

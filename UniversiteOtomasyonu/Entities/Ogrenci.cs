@@ -28,15 +28,12 @@ namespace UniversiteOtomasyonu.Entities
         [MinLength(3)]
         public string Email { get; set; }
 
-        [StringLength(11)]
+        [StringLength(15)]
         [DataType(DataType.PhoneNumber)]
         public string Telefon { get; set; }
 
         [DataType(DataType.Password)]
         public string Password { get; set; }
-
-
-        public List<Ders> Ders { get; set; }
 
         public int BolumId { get; set; }
         public Bolum Bolum { get; set; }

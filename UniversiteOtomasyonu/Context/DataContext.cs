@@ -18,10 +18,14 @@ namespace UniversiteOtomasyonu.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Ders>()
-            .HasOne(a => a.Sinif)
-            .WithOne(b => b.Ders)
-            .HasForeignKey<Sinif>(b => b.DersId);
+            //1-1 Relation
+            //modelBuilder.Entity<Ders>()
+            //.HasOne(a => a.Sinif)
+            //.WithOne(b => b.Ders)
+            //.HasForeignKey<Sinif>(b => b.DersId);
+
+            modelBuilder.Entity<BolumDers>()
+                .HasKey(i => new { i.DersId, i.BolumId });
         }
 
 
@@ -33,5 +37,6 @@ namespace UniversiteOtomasyonu.Context
         public DbSet<Sinif> Sinif { get; set; }
         public DbSet<Notlar> Notlars { get; set; }
         public DbSet<Kullanici> Kullanicis { get; set; }
+        public DbSet<BolumDers> BolumDers { get; set; }
     }
 }

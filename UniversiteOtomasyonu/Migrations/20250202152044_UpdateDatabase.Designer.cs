@@ -11,8 +11,8 @@ using UniversiteOtomasyonu.Context;
 namespace UniversiteOtomasyonu.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250126145440_CompletedEntities")]
-    partial class CompletedEntities
+    [Migration("20250202152044_UpdateDatabase")]
+    partial class UpdateDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,36 +23,6 @@ namespace UniversiteOtomasyonu.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("BolumDers", b =>
-                {
-                    b.Property<int>("BolumsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DerslerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BolumsId", "DerslerId");
-
-                    b.HasIndex("DerslerId");
-
-                    b.ToTable("BolumDers");
-                });
-
-            modelBuilder.Entity("DersOgrenci", b =>
-                {
-                    b.Property<int>("DersId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OgrencisId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DersId", "OgrencisId");
-
-                    b.HasIndex("OgrencisId");
-
-                    b.ToTable("DersOgrenci");
-                });
 
             modelBuilder.Entity("UniversiteOtomasyonu.Entities.Bolum", b =>
                 {
@@ -76,6 +46,21 @@ namespace UniversiteOtomasyonu.Migrations
                     b.ToTable("Bolums");
                 });
 
+            modelBuilder.Entity("UniversiteOtomasyonu.Entities.BolumDers", b =>
+                {
+                    b.Property<int>("DersId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BolumId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DersId", "BolumId");
+
+                    b.HasIndex("BolumId");
+
+                    b.ToTable("BolumDers");
+                });
+
             modelBuilder.Entity("UniversiteOtomasyonu.Entities.Ders", b =>
                 {
                     b.Property<int>("Id")
@@ -87,9 +72,6 @@ namespace UniversiteOtomasyonu.Migrations
                     b.Property<string>("Ad")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SinifId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -111,6 +93,57 @@ namespace UniversiteOtomasyonu.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Fakultes");
+                });
+
+            modelBuilder.Entity("UniversiteOtomasyonu.Entities.Kullanici", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TC")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
+                    b.Property<int>("Yetki")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Kullanicis");
+                });
+
+            modelBuilder.Entity("UniversiteOtomasyonu.Entities.Notlar", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DersId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Not")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OgrenciId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DersId");
+
+                    b.HasIndex("OgrenciId");
+
+                    b.ToTable("Notlars");
                 });
 
             modelBuilder.Entity("UniversiteOtomasyonu.Entities.Ogrenci", b =>
@@ -154,8 +187,8 @@ namespace UniversiteOtomasyonu.Migrations
 
                     b.Property<string>("Telefon")
                         .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.HasKey("Id");
 
@@ -205,8 +238,8 @@ namespace UniversiteOtomasyonu.Migrations
 
                     b.Property<string>("Telefon")
                         .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.HasKey("Id");
 
@@ -227,45 +260,9 @@ namespace UniversiteOtomasyonu.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DersId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("DersId")
-                        .IsUnique();
-
                     b.ToTable("Sinif");
-                });
-
-            modelBuilder.Entity("BolumDers", b =>
-                {
-                    b.HasOne("UniversiteOtomasyonu.Entities.Bolum", null)
-                        .WithMany()
-                        .HasForeignKey("BolumsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("UniversiteOtomasyonu.Entities.Ders", null)
-                        .WithMany()
-                        .HasForeignKey("DerslerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DersOgrenci", b =>
-                {
-                    b.HasOne("UniversiteOtomasyonu.Entities.Ders", null)
-                        .WithMany()
-                        .HasForeignKey("DersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("UniversiteOtomasyonu.Entities.Ogrenci", null)
-                        .WithMany()
-                        .HasForeignKey("OgrencisId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("UniversiteOtomasyonu.Entities.Bolum", b =>
@@ -279,13 +276,53 @@ namespace UniversiteOtomasyonu.Migrations
                     b.Navigation("Fakulte");
                 });
 
+            modelBuilder.Entity("UniversiteOtomasyonu.Entities.BolumDers", b =>
+                {
+                    b.HasOne("UniversiteOtomasyonu.Entities.Bolum", "Bolum")
+                        .WithMany("BolumDers")
+                        .HasForeignKey("BolumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniversiteOtomasyonu.Entities.Ders", "Ders")
+                        .WithMany("BolumDers")
+                        .HasForeignKey("DersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bolum");
+
+                    b.Navigation("Ders");
+                });
+
+            modelBuilder.Entity("UniversiteOtomasyonu.Entities.Notlar", b =>
+                {
+                    b.HasOne("UniversiteOtomasyonu.Entities.Ders", "Ders")
+                        .WithMany("Notlar")
+                        .HasForeignKey("DersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UniversiteOtomasyonu.Entities.Ogrenci", "Ogrenci")
+                        .WithMany("Notlar")
+                        .HasForeignKey("OgrenciId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ders");
+
+                    b.Navigation("Ogrenci");
+                });
+
             modelBuilder.Entity("UniversiteOtomasyonu.Entities.Ogrenci", b =>
                 {
-                    b.HasOne("UniversiteOtomasyonu.Entities.Bolum", null)
+                    b.HasOne("UniversiteOtomasyonu.Entities.Bolum", "Bolum")
                         .WithMany("Ogrencis")
                         .HasForeignKey("BolumId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Bolum");
                 });
 
             modelBuilder.Entity("UniversiteOtomasyonu.Entities.OgretimGorevlisi", b =>
@@ -299,19 +336,10 @@ namespace UniversiteOtomasyonu.Migrations
                     b.Navigation("Bolum");
                 });
 
-            modelBuilder.Entity("UniversiteOtomasyonu.Entities.Sinif", b =>
-                {
-                    b.HasOne("UniversiteOtomasyonu.Entities.Ders", "Ders")
-                        .WithOne("Sinif")
-                        .HasForeignKey("UniversiteOtomasyonu.Entities.Sinif", "DersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ders");
-                });
-
             modelBuilder.Entity("UniversiteOtomasyonu.Entities.Bolum", b =>
                 {
+                    b.Navigation("BolumDers");
+
                     b.Navigation("Ogrencis");
 
                     b.Navigation("OgretimGorevlisis");
@@ -319,13 +347,19 @@ namespace UniversiteOtomasyonu.Migrations
 
             modelBuilder.Entity("UniversiteOtomasyonu.Entities.Ders", b =>
                 {
-                    b.Navigation("Sinif")
-                        .IsRequired();
+                    b.Navigation("BolumDers");
+
+                    b.Navigation("Notlar");
                 });
 
             modelBuilder.Entity("UniversiteOtomasyonu.Entities.Fakulte", b =>
                 {
                     b.Navigation("Bolums");
+                });
+
+            modelBuilder.Entity("UniversiteOtomasyonu.Entities.Ogrenci", b =>
+                {
+                    b.Navigation("Notlar");
                 });
 #pragma warning restore 612, 618
         }

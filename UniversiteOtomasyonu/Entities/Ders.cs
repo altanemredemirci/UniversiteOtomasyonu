@@ -11,17 +11,15 @@ namespace UniversiteOtomasyonu.Entities
         public int Id { get; set; }
         public string Ad { get; set; }
 
-        //1-1
-        public int SinifId { get; set; }
-        public Sinif Sinif { get; set; }
-
         //1-N
-        public List<Ogrenci> Ogrencis { get; set; }
-
-        //1-N
-        public List<Bolum> Bolums { get; set; }
+        public List<BolumDers> BolumDers { get; set; }
 
 
         public List<Notlar> Notlar { get; set; }
+
+        public override string ToString()
+        {
+            return Ad;
+        }
     }
 }
